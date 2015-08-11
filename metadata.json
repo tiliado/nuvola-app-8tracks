@@ -1,11 +1,12 @@
 {
-    "id": "eighttracks",
+    "id": "8tracks",
     "name": "8tracks",
-    "maintainer_name": "Michael J Coyne?",
-    "maintainer_link": "https://github.com/FIXME",
+    "maintainer_name": "Jiří Janoušek",
+    "maintainer_link": "https://github.com/fenryxo",
     "version_major": 5,
     "version_minor": 0,
     "api_major": 3,
     "api_minor": 0,
-    "categories": "AudioVideo;Audio;"
+    "categories": "AudioVideo;Audio;",
+    "home_url": "https://8tracks.com/"
 }
