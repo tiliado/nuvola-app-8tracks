@@ -1,7 +1,7 @@
 Changelog
 =========
 
-5.1 - unreleased
+5.1 - May 23rd, 2016
 --------------------
 
   * Added a complete icon set.
