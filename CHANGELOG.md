@@ -1,6 +1,11 @@
 Changelog
 =========
 
+5.2 - unreleased
+----------------
+
+  * Port to Nuvola SDK.
+
 5.1 - May 23rd, 2016
 --------------------
 
