@@ -1,6 +1,8 @@
 Changelog
 =========
 
+ * Ported to Chromium backend and adjusted metadata extraction.
+
 5.2 - February 12th, 2017
 -------------------------
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Jiří Janoušek <janousek.jiri@gmail.com>
+ * Copyright 2015-2018 Jiří Janoušek <janousek.jiri@gmail.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -78,31 +78,15 @@
     }
 
     var buttons = this.getButtons()
-    if (buttons.play && buttons.play.style.display !== 'none') {
-      this.state = PlaybackState.PAUSED
-      player.setCanPause(false)
-      player.setCanPlay(true)
-    } else if (buttons.pause && buttons.pause.style.display !== 'none') {
-      this.state = PlaybackState.PLAYING
-      player.setCanPause(true)
-      player.setCanPlay(false)
-    } else {
-      this.state = PlaybackState.UNKNOWN
-      player.setCanPause(false)
-      player.setCanPlay(false)
-    }
-
-    player.setCanGoNext(this.state !== PlaybackState.UNKNOWN && buttons.skip && buttons.skip.style.display !== 'none')
-
-    try {
-      track.title = document.querySelector('.track.now_playing .title_artist .t').innerText
-      track.artist = document.querySelector('.track.now_playing .title_artist .a').innerText
-      track.album = document.querySelector('.track.now_playing .album .detail').innerText
-      track.artLocation = document.querySelector('#player_mix img.cover').src.replace(/w=\d+&h=\d+/, 'w=500&h=500')
-    } catch (e) {
-        // ~ console.log(e);
-    }
-
+    this.state = this.getState()
+    player.setCanPause(!!buttons.pause)
+    player.setCanPlay(!!buttons.play)
+    player.setCanGoNext(this.state !== PlaybackState.UNKNOWN && buttons.skip)
+    track.title = Nuvola.queryText('#now_playing .title_artist .t')
+    track.artist = Nuvola.queryText('#now_playing .title_artist .a')
+    track.album = Nuvola.queryText('#now_playing .album .detail')
+    track.artLocation = Nuvola.queryAttribute(
+      '#player_mix img.cover', 'src', (src) => src.replace(/w=\d+&h=\d+/, 'w=500&h=500'))
     player.setTrack(track)
     player.setPlaybackState(this.state)
 
@@ -111,11 +95,31 @@
   }
 
   WebApp.getButtons = function () {
-    return {
-      play: document.getElementById('player_play_button') || document.querySelector('#play_overlay .quick_play'),
-      pause: document.getElementById('player_pause_button'),
-      skip: document.getElementById('player_skip_button')
+    var skip = document.getElementById('player_skip_button') || document.getElementById('youtube_skip_button')
+    switch (this.getState()) {
+      case PlaybackState.PAUSED:
+        return {
+          play: document.getElementById('player_play_button') || document.getElementById('youtube_play_button'),
+          skip: skip
+        }
+      case PlaybackState.PLAYING:
+        return {
+          pause: document.getElementById('player_pause_button') || document.getElementById('youtube_pause_button'),
+          skip: skip
+        }
+      default:
+        return {
+          play: document.querySelector('#play_on_youtube') || document.querySelector('#play_overlay .quick_play')
+        }
     }
+  }
+
+  WebApp.getState = function () {
+    var elm = document.getElementById('mix_youtube')
+    if (!elm || elm.style.display === 'none') {
+      return PlaybackState.UNKNOWN
+    }
+    return elm.classList.contains('playing') ? PlaybackState.PLAYING : PlaybackState.PAUSED
   }
 
   // Handler of playback actions
