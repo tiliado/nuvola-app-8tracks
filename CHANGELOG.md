@@ -2,6 +2,7 @@ Changelog
 =========
 
  * Ported to Chromium backend and adjusted metadata extraction.
+ * The Like button has been integrated.
 
 5.2 - February 12th, 2017
 -------------------------

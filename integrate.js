@@ -32,8 +32,19 @@
   var PlaybackState = Nuvola.PlaybackState
   var PlayerAction = Nuvola.PlayerAction
 
+  // Translations
+  var C_ = Nuvola.Translate.pgettext
+
+  // Custom action
+  var ACTION_LIKE = 'like'
+
   // Create new WebApp prototype
   var WebApp = Nuvola.$WebApp()
+
+  WebApp._onInitAppRunner = function (emitter) {
+    Nuvola.WebApp._onInitAppRunner.call(this, emitter)
+    Nuvola.actions.addAction('playback', 'win', ACTION_LIKE, C_('Action', 'Like track'), null, null, null, true)
+  }
 
   // Initialization routines
   WebApp._onInitWebWorker = function (emitter) {
@@ -54,6 +65,7 @@
 
     this.state = PlaybackState.UNKNOWN
     player.setCanGoPrev(false)
+    player.addExtraActions([ACTION_LIKE])
 
     // Start update routine
     this.update()
@@ -90,22 +102,28 @@
     player.setTrack(track)
     player.setPlaybackState(this.state)
 
+    Nuvola.actions.updateEnabledFlag(ACTION_LIKE, !!buttons.like)
+    Nuvola.actions.updateState(ACTION_LIKE, !!(buttons.like && buttons.like.classList.contains('active')))
+
     // Schedule the next update
     setTimeout(this.update.bind(this), 500)
   }
 
   WebApp.getButtons = function () {
     var skip = document.getElementById('player_skip_button') || document.getElementById('youtube_skip_button')
+    var like = document.getElementById('player_like_button') || document.getElementById('youtube_like_button')
     switch (this.getState()) {
       case PlaybackState.PAUSED:
         return {
           play: document.getElementById('player_play_button') || document.getElementById('youtube_play_button'),
-          skip: skip
+          skip: skip,
+          like: like
         }
       case PlaybackState.PLAYING:
         return {
           pause: document.getElementById('player_pause_button') || document.getElementById('youtube_pause_button'),
-          skip: skip
+          skip: skip,
+          like: like
         }
       default:
         return {
@@ -142,6 +160,9 @@
         break
       case PlayerAction.NEXT_SONG:
         Nuvola.clickOnElement(buttons.skip)
+        break
+      case ACTION_LIKE:
+        Nuvola.clickOnElement(buttons.like)
         break
     }
   }
