@@ -1,6 +1,9 @@
 Changelog
 =========
 
+5.3 - June 1st, 2018
+--------------------
+
  * Ported to Chromium backend and adjusted metadata extraction.
  * The Like button has been integrated.
 
