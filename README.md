@@ -1,4 +1,4 @@
-8tracks • Nuvola Apps Runtime
+8tracks • Nuvola Apps Runtime [![CircleCI](https://circleci.com/gh/tiliado/nuvola-app-8tracks/tree/master.svg?style=svg)](https://circleci.com/gh/tiliado/nuvola-app-8tracks/tree/master)
 =============================
 
 Integration of 8tracks into your linux desktop via
