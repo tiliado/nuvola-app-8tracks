@@ -26,20 +26,20 @@
 
 (function (Nuvola) {
   // Create media player component
-  var player = Nuvola.$object(Nuvola.MediaPlayer)
+  const player = Nuvola.$object(Nuvola.MediaPlayer)
 
   // Handy aliases
-  var PlaybackState = Nuvola.PlaybackState
-  var PlayerAction = Nuvola.PlayerAction
+  const PlaybackState = Nuvola.PlaybackState
+  const PlayerAction = Nuvola.PlayerAction
 
   // Translations
-  var C_ = Nuvola.Translate.pgettext
+  const C_ = Nuvola.Translate.pgettext
 
   // Custom action
-  var ACTION_LIKE = 'like'
+  const ACTION_LIKE = 'like'
 
   // Create new WebApp prototype
-  var WebApp = Nuvola.$WebApp()
+  const WebApp = Nuvola.$WebApp()
 
   WebApp._onInitAppRunner = function (emitter) {
     Nuvola.WebApp._onInitAppRunner.call(this, emitter)
@@ -50,7 +50,7 @@
   WebApp._onInitWebWorker = function (emitter) {
     Nuvola.WebApp._onInitWebWorker.call(this, emitter)
 
-    var state = document.readyState
+    const state = document.readyState
     if (state === 'interactive' || state === 'complete') {
       this._onPageReady()
     } else {
@@ -75,21 +75,21 @@
   WebApp.update = function () {
     /* Fox for white flash container */
     if (!this.flashFixed) {
-      var movieContainer = document.querySelector('div.movieContainer')
+      const movieContainer = document.querySelector('div.movieContainer')
       if (movieContainer) {
         movieContainer.style.visibility = 'hidden'
         this.flashFixed = true
       }
     }
 
-    var track = {
+    const track = {
       title: null,
       artist: null,
       album: null,
       artLocation: null
     }
 
-    var buttons = this.getButtons()
+    const buttons = this.getButtons()
     this.state = this.getState()
     player.setCanPause(!!buttons.pause)
     player.setCanPlay(!!buttons.play)
@@ -110,8 +110,8 @@
   }
 
   WebApp.getButtons = function () {
-    var skip = document.getElementById('player_skip_button') || document.getElementById('youtube_skip_button')
-    var like = document.getElementById('player_like_button') || document.getElementById('youtube_like_button')
+    const skip = document.getElementById('player_skip_button') || document.getElementById('youtube_skip_button')
+    const like = document.getElementById('player_like_button') || document.getElementById('youtube_like_button')
     switch (this.getState()) {
       case PlaybackState.PAUSED:
         return {
@@ -133,7 +133,7 @@
   }
 
   WebApp.getState = function () {
-    var elm = document.getElementById('mix_youtube')
+    const elm = document.getElementById('mix_youtube')
     if (!elm || elm.style.display === 'none') {
       return PlaybackState.UNKNOWN
     }
@@ -142,7 +142,7 @@
 
   // Handler of playback actions
   WebApp._onActionActivated = function (emitter, name, param) {
-    var buttons = this.getButtons()
+    const buttons = this.getButtons()
     switch (name) {
       case PlayerAction.TOGGLE_PLAY:
         if (this.state === PlaybackState.PLAYING) {
@@ -168,4 +168,4 @@
   }
 
   WebApp.start()
-})(this)  // function(Nuvola)
+})(this) // function(Nuvola)
