@@ -1,6 +1,13 @@
 Changelog
 =========
 
+5.4 - April 11th, 2021
+----------------------
+
+ * Use Nuvola Runtime issue tracker for support
+ * Add Circle CI configuration
+ * Reformat code.
+
 5.3 - June 1st, 2018
 --------------------
 
